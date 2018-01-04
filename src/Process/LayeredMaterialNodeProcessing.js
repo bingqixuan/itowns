@@ -44,6 +44,8 @@ function initNodeElevationTextureFromParent(node, parent, layer) {
     // node might not be EMPTY_TEXTURE_ZOOM in this init function. That's because we can have
     // multiple elevation layers (thus multiple calls to initNodeElevationTextureFromParent) but a given
     // node can only use 1 elevation texture
+    // 继承了父亲的高程纹理，注意与color layer相对立的该节点的高程层级可能不是EMPTY_TEXTURE_ZOOM。那是因为我们可能拥有多个高程图层（因此会调用多次initNodeElevationTextureFromParent），
+    // 但是一个给定的节点只能用一个高程纹理
     if (parent.material && parent.material.getElevationLayerLevel() > node.material.getElevationLayerLevel()) {
         const coords = node.getCoordsForLayer(layer);
 
@@ -302,6 +304,8 @@ export function updateLayeredMaterialNodeElevation(context, layer, node, force) 
 
     // If currentElevevation is EMPTY_TEXTURE_ZOOM but material.loadedTexturesCount[l_ELEVATION] is > 0
     // means that we already tried and failed to download an elevation texture
+    // 如果currentElevation是EMPTY_TEXTURE_ZOOM，但是material.loadedTexturesCount[l_ELEVATION] is > 0,
+    // 那就意味着我们已经尝试过下载这个高程纹理，但是却失败了
     if (currentElevation == EMPTY_TEXTURE_ZOOM && node.material.loadedTexturesCount[l_ELEVATION] > 0) {
         return Promise.resolve();
     }
